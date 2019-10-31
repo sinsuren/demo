@@ -1,0 +1,67 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.0.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.2.0.RELEASE")
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.2.0.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'maven'
+    id 'idea'
+}
+
+group = 'com.sinsuren.sample.service'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    //compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    testCompile 'org.mockito:mockito-core'
+    testCompile('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testCompile 'org.springframework.security:spring-security-test'
+    // Test
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.1.0'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.0.RELEASE'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: '2.2.0.RELEASE'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+sourceSets {
+    test {
+        java.srcDir "src/test/java"
+        resources.srcDir "src/test/resources"
+    }
+}
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
+}
+
+test {
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        showStandardStreams = true
+    }
+}
